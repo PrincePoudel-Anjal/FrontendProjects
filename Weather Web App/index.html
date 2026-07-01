@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Nepal Weather App</title>
+</head>
+<body>
+    <div>
+        <h2 class = "heading">Check the weather of Various Cities of Nepal by typing:</h2>
+        <div class="display">
+        <div class="textbox">
+            <input type="text" class="city-input" placeholder="Enter the City">
+        </div>
+
+        <div class="Logo">
+            <img src="./images/clear.png" alt="Weather Icon" class="weather-icon">
+        </div>
+        
+        <div class="tempcity">
+            <p class="temperature">--°C</p>
+            <p class="city">Search a City</p>
+        </div>
+
+        <div class="humwinspeed">
+            <div class="humidity">
+                <p class="humidity-val">--%</p>
+                <p>Humidity</p>
+            </div>
+            <div class="windspeed">
+                <p class="wind-val">-- km/h</p>
+                <p>Wind Speed</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+      
+
+
+
+        const apikey = "4bd702866ef8a0d1e81af874cadbf79a";
+        const baseurl = "https://api.openweathermap.org/data/2.5/weather";
+        
+        //Creating Objects
+        const cityElement = document.querySelector(".city-input");
+        const temp = document.querySelector(".temperature");
+        const humidity = document.querySelector(".humidity-val");
+        const windspeed = document.querySelector(".wind-val");
+        const cityName = document.querySelector(".city");
+
+
+        async function checkWeather(city) {
+        try{
+            const answer = await fetch(`${baseurl}?q=${city}&appid=${apikey}&units=metric`);
+            if(!answer.ok){console.log("Api didn't respond properly, 404 Error"); return;}
+            const data = await answer.json();
+            // updating information with the data
+            temp.innerHTML = Math.round(data.main.temp )+ "°C";
+            cityName.innerHTML = data.name;
+            humidity.innerHTML = data.main.humidity + "%";
+            windspeed.innerHTML = data.wind.speed + " km/h";
+
+            cityElement.value = "";
+
+        }
+        catch(error){
+            console.log("Error Occurred.");
+        } }
+
+        cityElement.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+            event.preventDefault();           // For instantaneous task of Enter don't reload page
+            const city = cityElement.value.trim();     // Trim removes spaces
+            if (city !== "") {
+                checkWeather(city);
+            }
+        }
+        });
+
+
+
+
+
+
+    </script>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    </div>
+    
+</body>
+</html>
+
